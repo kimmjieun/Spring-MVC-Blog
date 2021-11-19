@@ -20,6 +20,12 @@ public class Article {
     @Column(length = 200, nullable = false) // 텍스트 타입, 비어있으면 안됨! 추후 SQL 학습 // 텍스트타입 안됨
     private String content;
 
+    // 내용을 재작성!
+    public void rewrite(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     @Builder // 빌더 패턴 적용! 추후 설명..!
     public Article(Long id, String title, String content) {
         this.id = id;

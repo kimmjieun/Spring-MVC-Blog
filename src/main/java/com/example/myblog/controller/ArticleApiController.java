@@ -3,15 +3,22 @@ package com.example.myblog.controller;
 import com.example.myblog.dto.ArticleForm;
 import com.example.myblog.entity.Article;
 import com.example.myblog.repository.ArticleRepository;
+import com.example.myblog.service.ArticleService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class ArticleApiController {
     @Autowired // 리파지터리 객체를 알아서 가져옴! 자바는 new ArticleRepository() 해야 했음!
     private ArticleRepository articleRepository;
+    // 서비스 레이어 연결! 서비스 레이어란?
+    private final ArticleService articleService;
+
+
 
     @PostMapping("/api/articles") // Post 요청이 "/api/articles" url로 온다면, 메소드 수행!
     public Long create(@RequestBody ArticleForm form) { // JSON 데이터를 받아옴!
@@ -39,11 +46,31 @@ public class ArticleApiController {
         return new ArticleForm(entity);
     }
 
-    @PutMapping("/api/articles/{id}") // HTTP 메소드 PUT으로 "/api/articles/{id}" 요청이 들어오면 수행!
+//    @PutMapping("/api/articles/{id}")
+//    public Long update(@PathVariable Long id,
+//                       @RequestBody ArticleForm form) {
+//        // 받아온 데이터 확인!
+//        log.info("form: " + form.toString());
+//        // 해당 id로 기존 데이터를 가져옴!
+//        Article target = articleRepository.findById(id)
+//                .orElseThrow(
+//                        () -> new IllegalArgumentException("해당 Article이 없습니다.")
+//                );
+//        log.info("target: " + target.toString());
+//        // 재 작성 및 저장!
+//        target.rewrite(form.getTitle(), form.getContent());
+//        Article saved = articleRepository.save(target);
+//        log.info("saved: " + saved.toString());
+//        // 아이디 반환
+//        return saved.getId();
+//    }
+
+    // 리팩토링
+    @PutMapping("/api/articles/{id}")
     public Long update(@PathVariable Long id,
                        @RequestBody ArticleForm form) {
-        log.info("form: " + form.toString()); // 받아온 데이터 확인!
-        // 여기 채우기
-        return 0L;
+        Article saved = articleService.update(id, form); // 서비스 객체가 update를 수행
+        return saved.getId();
     }
+
 }

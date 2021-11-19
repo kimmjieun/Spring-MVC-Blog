@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j // 로깅(logging) 기능 추가! Lombok 플러그인 설치 필요!
 @RequiredArgsConstructor // final 필드 값을 알아서 가져옴! (@autowired 대체!)
@@ -63,5 +61,7 @@ public class ArticleController {
         model.addAttribute("article", target);
         return "articles/edit";
     }
+
+
 
 }
