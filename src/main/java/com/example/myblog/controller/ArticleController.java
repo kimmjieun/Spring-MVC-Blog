@@ -1,6 +1,9 @@
 package com.example.myblog.controller;
 
 import com.example.myblog.dto.ArticleForm;
+import com.example.myblog.entity.Article;
+import com.example.myblog.repository.ArticleRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,14 +11,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j // 로깅(logging) 기능 추가! Lombok 플러그인 설치 필요!
+@RequiredArgsConstructor // final 필드 값을 알아서 가져옴! (@autowired 대체!)
 @Controller // 컨트롤러 선언! 요청과 응답을 처리!
 public class ArticleController {
+    // 리파지터리 객체 자동 삽입 됨! 위에서 @RequiredArgsConstructor 했음!
+    private final ArticleRepository articleRepository;
+
+
     @GetMapping("/articles") // 해당 요청을 처리하도록, 메소드를 등록!
     public String index(Model model) { // 모델 객체 가져옴
-        // 데이터를 모델에 등록! 등록된 데이터는 뷰 페이지에서 사용 가능!
-        // key(변수명): "msg",
-        // value(내용): "안녕하세요, 반갑습니다!"
-        model.addAttribute("msg", "안녕하세요, 반갑습니다!");
+        // 모든 Article을 가져옴
+        // Iterable 인터페이스는 ArrayList의 부모 인터페이스
+        Iterable<Article> articleList = articleRepository.findAll();
+        // 뷰 페이지로 articles 전달!
+        model.addAttribute("articles", articleList);
         return "articles/index"; // 뷰페이지 설정
     }
 
