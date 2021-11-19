@@ -4,8 +4,8 @@
   <hr>
   <p>articles/edit.mustache</p>
 </div>
-<form class="container">
-  {{#article}}
+{{#article}}
+  <form class="container">
     <div class="form-group">
       <label for="title">제목</label>
       <!-- value 속성 추가 -->
@@ -19,48 +19,7 @@
     <!-- 숨겨진 입력값 id 추가 -->
     <input type="hidden" id="article-id" value="{{id}}">
     <button type="button" class="btn btn-primary" id="article-update-btn">제출</button>
-  {{/article}}
-</form>
-<Script>
-// 데이터 전송 객체 생성!
-var article = {
-  // 초기화(이벤트 등록) 메소드
-  init: function() {
-    // 스코프 충돌 방지! (https://mobicon.tistory.com/189)
-    var _this = this;
-    // 생성 버튼 선택
-    const updateBtn = document.querySelector('#article-update-btn');
-    // 생성 버튼 클릭 시, 동작 할 메소드를 연결!
-    updateBtn.addEventListener('click', _this.update);
-  },
-  // article 갱 메소드
-  update: function() {
-    // form 데이터를 JSON으로 만듬
-    var data = {
-      id: document.querySelector('#article-id').value,
-      title: document.querySelector('#article-title').value,
-      content: document.querySelector('#article-content').value,
-    };
-    // 데이터 갱신 요청을 보냄
-    // fetch(URL, HTTP_REQUEST)
-    fetch('/api/articles/' + data.id, {
-      method: 'PUT', // PUT 방식으로, HTTP 요청.
-      body: JSON.stringify(data), // 위에서 만든 폼 데이터(data)를 함께 보냄.
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(function(response) { // 응답 처리!
-      // 요청 성공!
-      if (response.ok) {
-        alert('게시글이 작성 되었습니다.');
-        window.location.href='/articles/' + data.id; // 해당 URL로 브라우저를 새로고침!
-      } else { // 요청 실패..
-        alert('게시글 작성에 문제가 생겼습니다.');
-      }
-    });
-  }
-};
-// 객체 초기화!
-article.init();
-</script>
+  </form>
+{{/article}}
+<Script src="/js/app/article.js"></script> <!-- article.js 삽입 -->
 {{>layouts/footer}}
