@@ -53,4 +53,15 @@ public class ArticleController {
         log.info(form.toString()); // ArticleForm 객체 정보를 확인!
         return "redirect:/articles"; // 브라우저를 "articles" url로 보냄!
     }
+
+    @GetMapping("/articles/edit/{id}")
+    public String edit(@PathVariable Long id,
+                       Model model) {
+        Article target = articleRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 Article이 없습니다.")
+        );
+        model.addAttribute("article", target);
+        return "articles/edit";
+    }
+
 }

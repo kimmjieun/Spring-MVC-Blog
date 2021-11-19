@@ -38,4 +38,12 @@ public class ArticleApiController {
         // article을 form으로 변경! 궁극적으로는 JSON으로 변경 됨! 왜? RestController 때문!
         return new ArticleForm(entity);
     }
+
+    @PutMapping("/api/articles/{id}") // HTTP 메소드 PUT으로 "/api/articles/{id}" 요청이 들어오면 수행!
+    public Long update(@PathVariable Long id,
+                       @RequestBody ArticleForm form) {
+        log.info("form: " + form.toString()); // 받아온 데이터 확인!
+        // 여기 채우기
+        return 0L;
+    }
 }
