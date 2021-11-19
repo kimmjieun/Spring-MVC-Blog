@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j // 로깅(logging) 기능 추가! Lombok 플러그인 설치 필요!
@@ -26,6 +27,15 @@ public class ArticleController {
         // 뷰 페이지로 articles 전달!
         model.addAttribute("articles", articleList);
         return "articles/index"; // 뷰페이지 설정
+    }
+    @GetMapping("/articles/{id}")
+    public String show(@PathVariable Long id, // url의 {id} 값을 변수화!
+                       Model model) {
+        // id를 통해 Article을 가져옴!
+        Article article = articleRepository.findById(id).orElse(null);
+        // article을 뷰 페이지로 전달
+        model.addAttribute("article", article);
+        return "articles/show";
     }
 
     @GetMapping("/articles/new") // GET 요청이 해당 url로 오면, 아래 메소드를 수행!
